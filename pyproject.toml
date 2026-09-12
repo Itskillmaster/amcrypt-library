@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "amcrypt"
+version = "0.0.1"
+description = "Cryptographically hardened Python object serialization — bury your data in unbreakable tombs."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Ali Mirshekari" },
+]
+keywords = [
+    "serialization",
+    "encryption",
+    "aes-gcm",
+    "cryptography",
+    "security",
+    "x25519",
+    "key-exchange",
+    "plausible-deniability",
+    "forward-secrecy",
+    "anti-debugging",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security :: Cryptography",
+    "Typing :: Typed",
+]
+dependencies = [
+    "cryptography>=41.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Itskillmaster/amcrypt"
+Repository = "https://github.com/Itskillmaster/amcrypt"
+Issues = "https://github.com/Itskillmaster/amcrypt/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["amcrypt"]
