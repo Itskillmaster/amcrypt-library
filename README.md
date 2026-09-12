@@ -1,8 +1,8 @@
-# necro
+# amcrypt
 
 > *Bury your data in tombs no mortal can crack.*
 
-`necro` is a cryptographically hardened serialization library for Python. It wraps your objects in layers of defense — Pickle, Zlib compression, and AES-256-GCM authenticated encryption — sealed inside a tamper-evident binary envelope.
+`amcrypt` is a cryptographically hardened serialization library for Python. It wraps your objects in layers of defense — Pickle, Zlib compression, and AES-256-GCM authenticated encryption — sealed inside a tamper-evident binary envelope.
 
 **No shortcuts. No backdoors. No mercy.**
 
@@ -28,7 +28,7 @@
 ## Installation
 
 ```bash
-pip install necro
+pip install amcrypt
 ```
 
 ---
@@ -38,26 +38,26 @@ pip install necro
 ### 1. Summon a Key
 
 ```python
-from necro import summon_key
+from amcrypt import summon_key
 
 key, salt = summon_key("my-dark-secret", generate_salt=True)
 ```
 
-### 2. Raise the Necromancer
+### 2. Raise the necromancer
 
 ```python
 import os
-from necro import Necromancer
+from amcrypt import necromancer
 
 key = os.urandom(32)
-necro = Necromancer(key)
+amcrypt = amcryptmancer(key)
 ```
 
 ### 3. Kill & Revive
 
 ```python
-corpse = necro.kill({"spell": "obliterate", "damage": 9999})
-restored = necro.revive(corpse)
+corpse = amcrypt.kill({"spell": "obliterate", "damage": 9999})
+restored = amcrypt.revive(corpse)
 ```
 
 ---
@@ -71,9 +71,9 @@ The decoy key reveals a cover story; the real key reveals the classified data.
 An adversary **cannot prove** a second payload exists.
 
 ```python
-from necro import DoppelgangerNecromancer
+from amcrypt import Doppelgangeramcryptmancer
 
-doppel = DoppelgangerNecromancer()
+doppel = Doppelgangeramcryptmancer()
 corpse = doppel.kill(
     real_obj={"top_secret": "launch_codes"},
     decoy_obj={"status": "nothing_here"},
@@ -95,11 +95,11 @@ Automatically detects debuggers (pdb, pydevd, debugpy, etc.) via
 Raises `SoulTrappedError` if a debugger is found.
 
 ```python
-from necro import Necromancer, SoulTrappedError
+from amcrypt import amcryptmancer, SoulTrappedError
 
-necro = Necromancer(key, anti_debug=True)  # enabled by default
+amcrypt = amcryptmancer(key, anti_debug=True)  # enabled by default
 try:
-    necro.revive(corpse)
+    amcrypt.revive(corpse)
 except SoulTrappedError:
     print("A watcher lurks in the shadows")
 ```
@@ -111,7 +111,7 @@ every chunk using HKDF. Compromise of the current key does **not**
 expose past ciphertexts.
 
 ```python
-from necro import Streamer
+from amcrypt import Streamer
 
 streamer = Streamer(key, ratchet=True)
 for enc_chunk in streamer.seal(data_generator):
@@ -120,16 +120,16 @@ for enc_chunk in streamer.seal(data_generator):
 
 ### Ashes to Ashes (Kill Switch)
 
-After 3 consecutive tampering attempts (MAC failures), the Necromancer
+After 3 consecutive tampering attempts (MAC failures), the amcryptmancer
 securely wipes its key from memory and raises `SelfDestructError`.
 
 ```python
-from necro import Necromancer, SelfDestructError
+from amcrypt import amcryptmancer, SelfDestructError
 
-necro = Necromancer(key, max_tamper=3)
+amcrypt = amcryptmancer(key, max_tamper=3)
 for _ in range(3):
     try:
-        necro.revive(tampered_corpse)
+        amcrypt.revive(tampered_corpse)
     except SelfDestructError:
         print("All secrets have been purged")
         break
@@ -138,20 +138,20 @@ for _ in range(3):
 ### Soul Binding (HWID Locking)
 
 ```python
-corpse = necro.kill(data, hwid=b"my-server-01")
-restored = necro.revive(corpse, hwid=b"my-server-01")
+corpse = amcrypt.kill(data, hwid=b"my-server-01")
+restored = amcrypt.revive(corpse, hwid=b"my-server-01")
 ```
 
 ### Payload Decay (TTL)
 
 ```python
 import time
-from necro import RottenCorpseError
+from amcrypt import RottenCorpseError
 
-corpse = necro.kill(data, ttl_seconds=1)
+corpse = amcrypt.kill(data, ttl_seconds=1)
 time.sleep(1.1)
 try:
-    necro.revive(corpse)
+    amcrypt.revive(corpse)
 except RottenCorpseError:
     print("The corpse has rotted")
 ```
@@ -159,35 +159,35 @@ except RottenCorpseError:
 ### DPI Evasion (Stealth)
 
 ```python
-corpse = necro.kill(data, stealth=True)
+corpse = amcrypt.kill(data, stealth=True)
 print(corpse[:4])  # Random bytes, not "NCR1"
 ```
 
 ### Blood Pact (ECDSA Signatures)
 
 ```python
-from necro.crypto import ecdsa_generate_keypair
+from amcrypt.crypto import ecdsa_generate_keypair
 
 privkey, pubkey = ecdsa_generate_keypair()
-corpse = necro.kill(data, signing_key=privkey)
-restored = necro.revive(corpse, verify_key=pubkey)
+corpse = amcrypt.kill(data, signing_key=privkey)
+restored = amcrypt.revive(corpse, verify_key=pubkey)
 ```
 
 ### Polymorphic Curse (Random Padding)
 
 ```python
-corpse = necro.kill(data, pad=True)  # 16–256 bytes of random junk
+corpse = amcrypt.kill(data, pad=True)  # 16–256 bytes of random junk
 ```
 
 ### X25519 Key Exchange
 
 ```python
-from necro import Necromancer, DarkRitual
+from amcrypt import amcryptmancer, DarkRitual
 
 alice, bob = DarkRitual(), DarkRitual()
 shared = alice.shared_key(bob.public_key_bytes())
 bob.shared_key(alice.public_key_bytes())
-necro = Necromancer(shared)
+amcrypt = amcryptmancer(shared)
 ```
 
 ---
@@ -233,14 +233,14 @@ necro = Necromancer(shared)
 
 ## API Reference
 
-### `Necromancer(key, *, anti_debug=True, max_tamper=3)`
+### `amcryptmancer(key, *, anti_debug=True, max_tamper=3)`
 
 | Method | Description |
 |--------|-------------|
 | `kill(obj, *, hwid, ttl_seconds, stealth, signing_key, pad)` | Serialize + encrypt |
 | `revive(corpse, *, hwid, stealth, verify_key)` | Decrypt + deserialize |
 
-### `DoppelgangerNecromancer`
+### `Doppelgangeramcryptmancer`
 
 | Method | Description |
 |--------|-------------|
@@ -265,7 +265,7 @@ necro = Necromancer(shared)
 
 | Exception | Meaning |
 |-----------|---------|
-| `NecroError` | Base class |
+| `amcryptError` | Base class |
 | `MutilatedCorpseError` | Authentication failed |
 | `CorpseDeliveryError` | Invalid envelope structure |
 | `WrongRealmError` | HWID mismatch |
